@@ -199,18 +199,20 @@
 
 (define* (scm->json scm
                     #:optional (port (current-output-port))
-                    #:key (escape #f) (pretty #f))
+                    #:key (escape #f) (pretty #f) (prefer-array #f))
   "Creates a JSON document from native. The argument @var{scm} contains
 the native value of the JSON document. Takes one optional argument,
 @var{port}, which defaults to the current output port where the JSON
 document will be written."
-  (json-build scm port escape pretty 0))
+  (if prefer-array
+      (json-build-array scm port escape pretty 0)
+      (json-build scm port escape pretty 0)))
 
-(define* (scm->json-string scm #:key (escape #f) (pretty #f))
+(define* (scm->json-string scm #:key (escape #f) (pretty #f) (prefer-array #f))
   "Creates a JSON document from native into a string. The argument
 @var{scm} contains the native value of the JSON document."
   (call-with-output-string
    (lambda (p)
-     (scm->json scm p #:escape escape #:pretty pretty))))
+     (scm->json scm p #:escape escape #:pretty pretty #:prefer-array prefer-array))))
 
 ;;; (json builder) ends here
