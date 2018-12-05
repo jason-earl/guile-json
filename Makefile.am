@@ -31,8 +31,8 @@ dist-hook:
         # '' is to make OS X happy
 	sed -i '' "s/%VERSION%/$(PKG_LIST_VERSION)/g" $(top_distdir)/pkg-list.scm
 
-moddir = $(GUILE_SITE_DIR)
-objdir = $(GUILE_SITE_CCACHE)
+moddir=$(datadir)/guile/site/$(GUILE_EFFECTIVE_VERSION)
+objdir=$(libdir)/guile/$(GUILE_EFFECTIVE_VERSION)/site-ccache
 
 SOURCES = json.scm
 GOBJECTS = $(SOURCES:%.scm=%.go)
@@ -47,4 +47,4 @@ CLEANFILES = $(GOBJECTS)
 GUILE_WARNINGS = -Wunbound-variable -Warity-mismatch -Wformat
 SUFFIXES = .scm .go
 .scm.go:
-	$(top_builddir)/env $(GUILE_TOOLS) compile $(GUILE_WARNINGS) -o "$@" "$<"
+	$(top_builddir)/env $(GUILD) compile $(GUILE_WARNINGS) -o "$@" "$<"
